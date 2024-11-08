@@ -1,0 +1,26 @@
+version: "3"
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: events_db
+    networks:
+      - database_adminer
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - database_adminer
+networks:
+  database_adminer:
+
+volumes:
+  pg_data:

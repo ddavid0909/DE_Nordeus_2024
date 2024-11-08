@@ -1,0 +1,6 @@
+{"country": "US", "timezone": "America/New_York"}
+{"country": "JP", "timezone": "Asia/Tokyo"}
+{"country": "DE", "timezone": "Europe/Berlin"}
+{"country": "IT", "timezone": "Europe/Rome"}
+{"country": "RS", "timezone": "Europe/Belgrade"}
+{"country": "It", "timezone": "A wrong value"}

@@ -1,0 +1,47 @@
+{"event_id": 0, "event_type": "registration", "event_timestamp": 1728463546, "event_data": {"country": "DE", "user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "device_os": "iOS"}}
+{"event_id": 1, "event_type": "registration", "event_timestamp": 1728475467, "event_data": {"country": "JP", "user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "device_os": "Android"}}
+{"event_id": 2, "event_type": "session_ping", "event_timestamp": 1728482292, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": "session_start"}}
+{"event_id": 3, "event_type": "session_ping", "event_timestamp": 1728482352, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 4, "event_type": "session_ping", "event_timestamp": 1728482412, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 5, "event_type": "session_ping", "event_timestamp": 1728482472, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 6, "event_type": "session_ping", "event_timestamp": 1728482532, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 7, "event_type": "session_ping", "event_timestamp": 1728482592, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 8, "event_type": "session_ping", "event_timestamp": 1728482652, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 9, "event_type": "session_ping", "event_timestamp": 1728482712, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 10, "event_type": "session_ping", "event_timestamp": 1728482772, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 11, "event_type": "session_ping", "event_timestamp": 1728482832, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 12, "event_type": "session_ping", "event_timestamp": 1728482892, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 13, "event_type": "session_ping", "event_timestamp": 1728482952, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 14, "event_type": "session_ping", "event_timestamp": 1728483012, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 15, "event_type": "session_ping", "event_timestamp": 1728483072, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": ""}}
+{"event_id": 16, "event_type": "session_ping", "event_timestamp": 1728483132, "event_data": {"user_id": "cdb30706-5cc9-a1c0-058c-242b96206470", "type": "session_end"}}
+{"event_id": 17, "event_type": "registration", "event_timestamp": 1728487655, "event_data": {"country": "US", "user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "device_os": "Android"}}
+{"event_id": 18, "event_type": "session_ping", "event_timestamp": 1728494720, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": "session_start"}}
+{"event_id": 19, "event_type": "session_ping", "event_timestamp": 1728494764, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": "session_start"}}
+{"event_id": 20, "event_type": "session_ping", "event_timestamp": 1728494780, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 21, "event_type": "session_ping", "event_timestamp": 1728494824, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 22, "event_type": "match", "event_timestamp": 1728494830, "event_data": {"match_id": "8434265a-912b-11ef-91ee-bafd2d38177c", "home_user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "away_user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "home_goals_scored": null, "away_goals_scored": null}}
+{"event_id": 23, "event_type": "session_ping", "event_timestamp": 1728494840, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 24, "event_type": "session_ping", "event_timestamp": 1728494884, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 25, "event_type": "session_ping", "event_timestamp": 1728494900, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 26, "event_type": "match", "event_timestamp": 1728494943, "event_data": {"match_id": "8434265a-912b-11ef-91ee-bafd2d38177c", "home_user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "away_user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "home_goals_scored": 3, "away_goals_scored": 0}}
+{"event_id": 27, "event_type": "session_ping", "event_timestamp": 1728494944, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": "session_end"}}
+{"event_id": 28, "event_type": "session_ping", "event_timestamp": 1728494960, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 29, "event_type": "session_ping", "event_timestamp": 1728495020, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 30, "event_type": "session_ping", "event_timestamp": 1728495080, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 31, "event_type": "session_ping", "event_timestamp": 1728495140, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": "session_end"}}
+{"event_id": 32, "event_type": "session_ping", "event_timestamp": 1728496151, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": "session_start"}}
+{"event_id": 33, "event_type": "session_ping", "event_timestamp": 1728496211, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 34, "event_type": "session_ping", "event_timestamp": 1728496271, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": ""}}
+{"event_id": 35, "event_type": "session_ping", "event_timestamp": 1728496331, "event_data": {"user_id": "c4bf11bf-f279-5235-0cb3-023072ce1456", "type": "session_end"}}
+{"event_id": 36, "event_type": "session_ping", "event_timestamp": 1728501936, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": "session_start"}}
+{"event_id": 37, "event_type": "session_ping", "event_timestamp": 1728501996, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 38, "event_type": "session_ping", "event_timestamp": 1728502056, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 39, "event_type": "session_ping", "event_timestamp": 1728502116, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 40, "event_type": "session_ping", "event_timestamp": 1728502176, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 41, "event_type": "session_ping", "event_timestamp": 1728502236, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 42, "event_type": "session_ping", "event_timestamp": 1728502296, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 43, "event_type": "session_ping", "event_timestamp": 1728502356, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 44, "event_type": "session_ping", "event_timestamp": 1728502416, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 45, "event_type": "session_ping", "event_timestamp": 1728502476, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": ""}}
+{"event_id": 46, "event_type": "session_ping", "event_timestamp": 1728502536, "event_data": {"user_id": "52d65a1b-8012-934e-001b-19e6ba3cdc0e", "type": "session_end"}}
