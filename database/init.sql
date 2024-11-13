@@ -30,19 +30,27 @@ CREATE TABLE events.Event (
 );
 
 CREATE TABLE events.Registration (
-    event_id BIGINT PRIMARY KEY REFERENCES events.Event (event_id),
-    user_id BIGINT REFERENCES users.User (user_id),
-    device_id BIGINT REFERENCES device.Device(device_id),
+    event_id BIGINT PRIMARY KEY REFERENCES events.Event (event_id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users.User (user_id),
+    device_id BIGINT NOT NULL REFERENCES device.Device(device_id),
     country_code CHAR(2) NOT NULL REFERENCES country.Country(country_id)
 );
 
 CREATE TABLE events.Match (
-  event_id BIGINT PRIMARY KEY REFERENCES events.Event (event_id),
-  match_id TEXT NOT NULL,
+  match_id TEXT PRIMARY KEY NOT NULL,
+  event_id_start BIGINT NOT NULL REFERENCES events.Event (event_id) ON DELETE CASCADE,
+  event_id_end BIGINT REFERENCES events.Event(event_id),
   home_user_id BIGINT NOT NULL REFERENCES users.User(user_id),
   away_user_id BIGINT NOT NULL REFERENCES users.User(user_id),
   home_goals_scored INT,
   away_goals_scored INT
+);
+
+CREATE TABLE events.Session (
+    event_id BIGINT PRIMARY KEY REFERENCES events.Event(event_id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users.User(user_id),
+    session_user_id BIGINT NOT NULL,
+    is_start SMALLINT NOT NULL CHECK(is_start = 1 OR is_start = 0)
 );
 
 INSERT INTO events.Type(type_name) VALUES ('registration'), ('session_ping'), ('match');
