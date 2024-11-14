@@ -1,5 +1,6 @@
 import datetime
 import os
+import sys
 import time
 
 import psycopg2
@@ -312,6 +313,7 @@ def delete_bad_matches(free_memory=True):
             with conn.cursor() as cursor:
                 cursor.execute("VACUUM FULL events.event")
                 cursor.execute("VACUUM FULL events.match")
+                cursor.execute("VACUUM FULL events.session")
             conn.autocommit = False
 '''
 def delete_unnecessary_session_pings(free_memory=True):
@@ -368,12 +370,17 @@ def delete_unnecessary_session_pings(free_memory=True):
 '''
 
 if __name__ == '__main__':
-    insert_into_country('timezones.jsonl')
+    if len(sys.argv) < 3:
+        raise Exception('Missing command line parameters: file towards timezones and file towards events')
+    timezones = sys.argv[1]
+    events = sys.argv[2]
+    insert_into_country(timezones)
     print("Country insertion successful")
-    insert_into_events('events_test.jsonl')
+    insert_into_events(events)
     print("Event insertion successful")
     delete_bad_matches(True)
     print("Match deletion is successful")
+    #do not used. sessions cleaned up as they are inserted.
     #delete_unnecessary_session_pings(True)
     #print("Session deletion is successful")
     conn.close()
