@@ -1,0 +1,30 @@
+version: "3"
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: events_db
+    networks:
+      - database_api
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql/data
+  api:
+    image: api
+    environment:
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      PRODUCTION: true
+    networks:
+      - database_api
+    ports:
+      - 5000:5000
+networks:
+  database_api:
+
+volumes:
+  pg_data:

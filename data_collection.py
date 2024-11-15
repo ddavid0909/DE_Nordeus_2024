@@ -178,7 +178,7 @@ def registration(opened_cursor, event_data, event_id, event_timestamp):
                           (event_id, event_data['user_id'], event_data['device_os'], event_data['country']))
     if opened_cursor.fetchone():
         return 0
-    print(f"Insertion failed for event {event_id}. Check that device {event_data['device_os']} "
+    print(f"Registration failed for event {event_id}. Check that device {event_data['device_os']} "
           f"and country {event_data['country']} exist. Conflict may have occurred.")
     return 3
 
@@ -203,6 +203,7 @@ def session_ping(opened_cursor, event_data, event_id, event_timestamp):
 def session_ping(opened_cursor, event_data, event_id, event_timestamp):
     #missing data
     if 'user_id' not in event_data:
+        print(f"Missing user_id in event_data for session_ping with event_id {event_id}")
         return 1
     #check if belongs to started session
     opened_cursor.execute("SELECT s.session_user_id "
@@ -222,6 +223,7 @@ def session_ping(opened_cursor, event_data, event_id, event_timestamp):
                               "ON CONFLICT DO NOTHING "
                               "RETURNING *", (event_id, event_data['user_id']))
         if not opened_cursor.fetchone():
+            print(f"User {event_data['user_id']} is most likely mnot registered and therefore cannot have a session")
             return 2
         return 0
     session_user_id = session_data[0]
@@ -233,7 +235,7 @@ def session_ping(opened_cursor, event_data, event_id, event_timestamp):
     agg_data = opened_cursor.fetchone()
     user_id = agg_data[0]
     last_sessions = agg_data[1]
-    print(last_sessions)
+    #print(last_sessions)
     if len(last_sessions) > 1:
         opened_cursor.execute("DELETE FROM events.event WHERE event.event_id = %s ", (last_sessions[-1],))
 
@@ -241,6 +243,7 @@ def session_ping(opened_cursor, event_data, event_id, event_timestamp):
                           "VALUES(%s, %s, %s, 0) "
                           "ON CONFLICT DO NOTHING RETURNING *", (event_id, user_id, session_user_id))
     if not opened_cursor.fetchone():
+        print(f"Fatal error. Something went wrong with insertion. Check duplicate event_id {event_id}")
         return 3
     return 0
 
@@ -301,6 +304,8 @@ def insert_into_events(filename):
                     # only if complete insertion works, the transaction is committed.
                     conn.commit()
             # print(line)
+            else:
+                print(f"Event {line.get('event_id')} is not inserted. It is likely duplicate or of non-existent type {line.get('type')}")
             line = events.readline()
 
 #data cleansing after data collection
@@ -369,6 +374,21 @@ def delete_unnecessary_session_pings(free_memory=True):
         conn.autocommit = False
 '''
 
+def delete_sessions_with_no_valid_end(free_memory=True):
+    with conn.cursor() as delete_cursor:
+        delete_cursor.execute("DELETE FROM events.event "
+                              "WHERE event_id IN "
+                              "(SELECT event_id FROM events.session "
+                              "WHERE (session_user_id, user_id) IN "
+                              "(SELECT s1.session_user_id, s1.user_id "
+                              "FROM events.session s1 JOIN events.session s2 "
+                              "ON s1.session_user_id = s2.session_user_id "
+                              "AND s1.user_id = s2.user_id AND s1.is_start = s2.is_start "
+                              "GROUP BY s1.session_user_id, s1.user_id  "
+                              "HAVING COUNT(*) != 2))"
+                              )
+        conn.commit()
+
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         raise Exception('Missing command line parameters: file towards timezones and file towards events')
@@ -380,7 +400,7 @@ if __name__ == '__main__':
     print("Event insertion successful")
     delete_bad_matches(True)
     print("Match deletion is successful")
-    #do not used. sessions cleaned up as they are inserted.
+    #do not use. sessions cleaned up as they are inserted.
     #delete_unnecessary_session_pings(True)
     #print("Session deletion is successful")
     conn.close()

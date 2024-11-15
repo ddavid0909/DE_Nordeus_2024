@@ -133,7 +133,7 @@ def get_user_stats():
                                      "WHEN m.away_user_id = %s AND m.away_goals_scored > m.home_goals_scored THEN 3 "
                                      "WHEN m.away_user_id = %s AND m.away_goals_scored = m.home_goals_scored THEN 1 "
                                      "ELSE 0 END), 0)  "
-                                     "FROM events.match m JOIN events.event e ON m.event_id = e.event_id "
+                                     "FROM events.match m JOIN events.event e ON m.event_id_start = e.event_id "
                                      "WHERE (m.home_user_id = %s OR m.away_user_id = %s) "
                                      "AND e.event_timestamp::DATE = %s::DATE",
                                      (user_id, user_id, user_id, user_id, user_id, user_id, date))
@@ -161,16 +161,17 @@ def get_user_stats():
         else:
             match_time_cursor.execute("WITH match_time(match_time) AS ( "
                                       "SELECT COALESCE(SUM("
-                                      "CASE WHEN e1.event_timestamp::DATE = e2.event_timestamp::DATE AND e1.event_timestamp = %s::DATE "
+                                      "CASE WHEN e1.event_timestamp::DATE = e2.event_timestamp::DATE AND e1.event_timestamp::DATE = %s::DATE "
                                             "THEN EXTRACT (EPOCH FROM e2.event_timestamp-e1.event_timestamp)"
                                       "WHEN e2.event_timestamp::DATE = %s::DATE "
                                             "THEN EXTRACT (EPOCH FROM e2.event_timestamp-DATE_TRUNC('day', e2.event_timestamp))"
                                       "WHEN e1.event_timestamp::DATE = %s::DATE "
-                                            "THEN EXTRACT (EPOCH FROM DATE_TRUNC('day', e1.event_timestamp)+ INTERVAL '1 day' - e1.timestamp) END "
+                                            "THEN EXTRACT (EPOCH FROM DATE_TRUNC('day', e1.event_timestamp)+ INTERVAL '1 day' - e1.event_timestamp) END "
                                       "),0) "
                                       "FROM events.match m JOIN events.event e1 ON m.event_id_start = e1.event_id "
                                       "JOIN events.event e2 ON m.event_id_end = e2.event_id "
-                                      "WHERE (m.home_user_id = %s OR m.away_user_id = %s) AND (e1.event_timestamp = %s OR e2.event_timestamp = %s)"
+                                      "WHERE (m.home_user_id = %s OR m.away_user_id = %s) "
+                                      "AND (e1.event_timestamp::DATE = %s::DATE OR e2.event_timestamp::DATE = %s::DATE)"
                                       ")"
                                       "SELECT ((SELECT match_time FROM match_time)*1.0/"
                                       "COALESCE(SUM("
@@ -181,7 +182,7 @@ def get_user_stats():
                                             "THEN EXTRACT (EPOCH FROM e2.event_timestamp-DATE_TRUNC('day', e2.event_timestamp)) "
                                       "WHEN e1.event_timestamp::DATE = %s::DATE "
                                             "THEN EXTRACT (EPOCH FROM DATE_TRUNC('day', e1.event_timestamp) + INTERVAL '1 day' - e1.event_timestamp)"
-                                      "ELSE 0 END), 0))*100 "
+                                      "ELSE NULL END), 1))*100 "
                                       "FROM events.event e1 JOIN events.session s1 ON  e1.event_id = s1.event_id "
                                       "JOIN events.session s2 ON s1.session_user_id = s2.session_user_id and s1.user_id = s2.user_id "
                                       "JOIN events.event e2 ON e2.event_id = s2.event_id "
@@ -226,10 +227,13 @@ def get_game_stats():
 
     #number of sessions
     with conn.cursor() as number_sessions_cursor:
-        query = "SELECT COALESCE(SUM(s.is_start), 0) FROM events.session s "
+        query = "SELECT COALESCE(SUM(s1.is_start), 0) FROM events.session s1 "
         if date:
-            query = query + (" JOIN events.event e ON s.event_id = e.event_id "
-                             "WHERE %s::DATE BETWEEN e1.event_timestamp::DATE AND e2.event_timestamp::DATE")
+            query = query + (" JOIN events.event e1 ON s1.event_id = e1.event_id "
+                             " JOIN events.session s2 ON s1.session_user_id = s2.session_user_id AND "
+                             "s1.user_id = s2.user_id JOIN events.event e2 ON s2.event_id = e2.event_id "
+                             "WHERE s1.is_start = 1 AND s2.is_start = 0 "
+                             "AND %s::DATE BETWEEN e1.event_timestamp::DATE AND e2.event_timestamp::DATE")
             number_sessions_cursor.execute(query, (date,))
         else:
             number_sessions_cursor.execute(query)
@@ -243,11 +247,12 @@ def get_game_stats():
         else:
             average_cursor.execute(
                 "WITH sessions_per_user(user_id, session_num) "
-                "AS (SELECT s.user_id, SUM(s.is_start) "
-                "FROM events.session s JOIN events.event e "
-                "ON s.event_id = e.event_id "
-                "WHERE %s::DATE BETWEEN e.event_timestamp::DATE AND e.event_timestamp::DATE "
-                "GROUP BY s.user_id) "
+                "AS (SELECT s1.user_id, SUM(s1.is_start) "
+                "FROM events.session s1 JOIN events.event e1 "
+                "ON s1.event_id = e1.event_id JOIN events.session s2 ON s1.session_user_id = s2.session_user_id "
+                "AND s1.user_id = s2.user_id JOIN events.event e2 ON e2.event_id = s2.event_id "
+                "WHERE s1.is_start = 1 AND s2.is_start = 0 AND %s::DATE BETWEEN e1.event_timestamp::DATE AND e2.event_timestamp::DATE "
+                "GROUP BY s1.user_id) "
                 "SELECT COALESCE(AVG(session_num),0) FROM sessions_per_user", (date,))
         result['average_sessions_number'] = average_cursor.fetchone()[0]
 
@@ -285,4 +290,4 @@ def get_game_stats():
     return jsonify(result), 200
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host= app.config.get('HOST'))
