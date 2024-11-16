@@ -309,17 +309,11 @@ def insert_into_events(filename):
             line = events.readline()
 
 #data cleansing after data collection
-def delete_bad_matches(free_memory=True):
+def delete_bad_matches():
     with conn.cursor() as delete_cursor:
         delete_cursor.execute("DELETE FROM events.event WHERE event_id IN (SELECT event_id_start FROM events.match WHERE event_id_end IS NULL)")
         conn.commit()
-        if free_memory:
-            conn.autocommit = True
-            with conn.cursor() as cursor:
-                cursor.execute("VACUUM FULL events.event")
-                cursor.execute("VACUUM FULL events.match")
-                cursor.execute("VACUUM FULL events.session")
-            conn.autocommit = False
+
 '''
 def delete_unnecessary_session_pings(free_memory=True):
     query = """
@@ -374,7 +368,7 @@ def delete_unnecessary_session_pings(free_memory=True):
         conn.autocommit = False
 '''
 
-def delete_sessions_with_no_valid_end(free_memory=True):
+def delete_sessions_with_no_valid_end():
     with conn.cursor() as delete_cursor:
         delete_cursor.execute("DELETE FROM events.event "
                               "WHERE event_id IN "
@@ -389,6 +383,14 @@ def delete_sessions_with_no_valid_end(free_memory=True):
                               )
         conn.commit()
 
+def vacuum():
+    conn.autocommit = True
+    with conn.cursor() as cursor:
+        cursor.execute("VACUUM FULL events.event")
+        cursor.execute("VACUUM FULL events.match")
+        cursor.execute("VACUUM FULL events.session")
+    conn.autocommit = False
+
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         raise Exception('Missing command line parameters: file towards timezones and file towards events')
@@ -398,9 +400,9 @@ if __name__ == '__main__':
     print("Country insertion successful")
     insert_into_events(events)
     print("Event insertion successful")
-    delete_bad_matches(True)
+    delete_sessions_with_no_valid_end()
+    print("Session deletion successful")
+    delete_bad_matches()
     print("Match deletion is successful")
-    #do not use. sessions cleaned up as they are inserted.
-    #delete_unnecessary_session_pings(True)
-    #print("Session deletion is successful")
+    vacuum()
     conn.close()
