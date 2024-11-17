@@ -305,7 +305,7 @@ def insert_into_events(filename):
                     conn.commit()
             # print(line)
             else:
-                print(f"Event {line.get('event_id')} is not inserted. It is likely duplicate or of non-existent type {line.get('type')}")
+                print(f"Event {line.get('event_id')} is not inserted. It is likely duplicate or of non-existent type {line.get('event_type')}")
             line = events.readline()
 
 #data cleansing after data collection
